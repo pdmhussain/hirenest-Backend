@@ -1,40 +1,50 @@
 package com.hirenest.entity;
 
+import com.hirenest.enums.EmploymentType;
+import com.hirenest.enums.OfferStatus;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
-
-import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "offer_letters")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class OfferLetter {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee;
+    @Column(name = "employee_id", nullable = false)
+    private Long employeeId;
 
-    @Column(nullable = false, unique = true)
-    private String offerNumber;
+    @Column(name = "offer_letter_number", nullable = false, unique = true)
+    private String offerLetterNumber;
 
-    @Column(nullable = false)
+    @Column(name = "offer_date", nullable = false)
     private LocalDate offerDate;
 
-    private String filePath;
+    @Column(name = "offer_letter_file")
+    private String offerLetterFile;
 
-    private String employmentType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "employment_type", nullable = false)
+    private EmploymentType employmentType;
 
-    private BigDecimal salaryOrStipend;
+    @Column(name = "offered_salary", precision = 12, scale = 2)
+    private BigDecimal offeredSalary;
 
+    @Column(name = "offered_stipend", precision = 12, scale = 2)
+    private BigDecimal offeredStipend;
+
+    @Column(name = "joining_date", nullable = false)
     private LocalDate joiningDate;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "offer_status", nullable = false)
+    private OfferStatus offerStatus;
 }

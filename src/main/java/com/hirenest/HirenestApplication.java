@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class HiesnestApplication {
+public class HirenestApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(HiesnestApplication.class, args);
+		SpringApplication.run(HirenestApplication.class, args);
 	}
 
 }
