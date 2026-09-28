@@ -1,13 +1,10 @@
 package com.hirenest.entity;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "users")
@@ -31,16 +28,10 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role = "HR";
+    private String role;
 
     @Column(nullable = false)
-    private String status = "ACTIVE";
-
-    @Column(nullable = false)
-    private boolean active = true;
-
-    @Column(nullable = false)
-    private boolean emailVerified = false;
+    private String status;
 
     private LocalDateTime createdAt;
 
