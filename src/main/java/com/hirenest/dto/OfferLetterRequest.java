@@ -1,5 +1,7 @@
 package com.hirenest.dto;
 
+import com.hirenest.enums.EmploymentType;
+import com.hirenest.enums.OfferStatus;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -24,18 +26,24 @@ public class OfferLetterRequest {
 
     private String offerLetterFile;
 
-    @NotBlank(message = "Employment type is required")
-    private String employmentType;
+    @NotNull(message = "Employment type is required")
+    private EmploymentType employmentType;
 
-    @DecimalMin(value = "0.0", message = "Offered salary cannot be negative")
+    @DecimalMin(
+            value = "0.0",
+            message = "Offered salary cannot be negative"
+    )
     private BigDecimal offeredSalary;
 
-    @DecimalMin(value = "0.0", message = "Offered stipend cannot be negative")
+    @DecimalMin(
+            value = "0.0",
+            message = "Offered stipend cannot be negative"
+    )
     private BigDecimal offeredStipend;
 
     @NotNull(message = "Joining date is required")
     private LocalDate joiningDate;
 
-    @NotBlank(message = "Offer status is required")
-    private String offerStatus;
+    @NotNull(message = "Offer status is required")
+    private OfferStatus offerStatus;
 }

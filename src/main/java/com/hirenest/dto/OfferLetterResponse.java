@@ -1,5 +1,7 @@
 package com.hirenest.dto;
 
+import com.hirenest.enums.EmploymentType;
+import com.hirenest.enums.OfferStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +22,7 @@ public class OfferLetterResponse {
 
     private String offerLetterFile;
 
-    private String employmentType;
+    private EmploymentType employmentType;
 
     private BigDecimal offeredSalary;
 
@@ -28,5 +30,5 @@ public class OfferLetterResponse {
 
     private LocalDate joiningDate;
 
-    private String offerStatus;
+    private OfferStatus offerStatus;
 }
