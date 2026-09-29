@@ -1,6 +1,9 @@
 package com.hirenest.dto;
 
+<<<<<<< HEAD
 import com.hirenest.entity.Employee;
+=======
+>>>>>>> master
 import lombok.Data;
 
 @Data
