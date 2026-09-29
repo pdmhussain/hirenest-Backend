@@ -1,10 +1,11 @@
-package com.hirenest.service;
+package com.hirenest.serviceImpl;
 
 import com.hirenest.dto.BankDetailsDto;
 import com.hirenest.entity.BankDetails;
 import com.hirenest.entity.Employee;
 import com.hirenest.repository.BankDetailsRepository;
 import com.hirenest.repository.EmployeeRepository;
+import com.hirenest.service.BankDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
