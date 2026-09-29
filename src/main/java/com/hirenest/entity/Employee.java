@@ -1,0 +1,51 @@
+package com.hirenest.entity;
+
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "employees")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, unique = true)
+    private String employeeId;
+
+    @Column(nullable = false)
+    private String fullName;
+
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    private String phone;
+
+    private LocalDate dateOfBirth;
+
+    private String residentialAddress;
+
+    private String permanentAddress;
+
+    private String emergencyContactName;
+
+    private String emergencyContactPhone;
+
+    @Column(nullable = false)
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(name = "domain_id")
+    private Domain domain;
+}
