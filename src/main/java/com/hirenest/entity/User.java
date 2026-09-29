@@ -47,4 +47,12 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
+
+    public boolean isActive() {
+        return false;
+    }
+
+    public boolean isEmailVerified() {
+        return false;
+    }
 }
