@@ -1,40 +1,50 @@
 package com.hirenest.entity;
 
-import java.time.LocalDateTime;
-
+import com.hirenest.enums.DocumentType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "employee_documents")
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 public class EmployeeDocument {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "document_id")
+    private Long documentId;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id", nullable = false)
-    private Employee employee;
+    @Column(name = "employee_id", nullable = false)
+    private Long employeeId;
 
-    @Column(nullable = false)
-    private String documentType;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "document_type", nullable = false)
+    private DocumentType documentType;
 
-    @Column(nullable = false)
+    @Column(name = "document_name", nullable = false)
     private String documentName;
 
-    private String filePath;
+    @Column(name = "upload_date", nullable = false)
+    private LocalDate uploadDate;
 
-    private LocalDateTime uploadedDate;
+    // Original uploaded file name
+    @Column(name = "file_name")
+    private String fileName;
 
+    // File MIME type
+    // Example: application/pdf, image/jpeg
+    @Column(name = "content_type")
+    private String contentType;
+
+    // Actual file stored inside MySQL
+    @Lob
+    @Column(name = "file_data", columnDefinition = "LONGBLOB")
+    private byte[] fileData;
+
+    @Column(name = "status")
     private String status;
-
-    @PrePersist
-    protected void onCreate() {
-        uploadedDate = LocalDateTime.now();
-    }
 }
