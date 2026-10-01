@@ -1,9 +1,11 @@
 package com.hirenest.dto;
 
-<<<<<<< HEAD
+
 import com.hirenest.entity.Employee;
-=======
->>>>>>> master
+
+
+import com.hirenest.enums.PFStatus;
+import com.hirenest.enums.UANStatus;
 import lombok.Data;
 
 @Data
@@ -14,7 +16,7 @@ public class PfDetailsDto {
 
     private String uan;
 
-    private String pfStatus;
+    private PFStatus pfStatus;
 
-    private String uanStatus;
+    private UANStatus uanStatus;
 }
