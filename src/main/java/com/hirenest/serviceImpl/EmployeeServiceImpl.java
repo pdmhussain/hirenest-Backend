@@ -1,6 +1,5 @@
 package com.hirenest.serviceImpl;
 
-
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import com.hirenest.repository.EmployeeRepository;
 import com.hirenest.service.EmployeeService;
 import com.hirenest.entity.Domain;
 import com.hirenest.repository.DomainRepository;
-
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -32,21 +30,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeResponse createEmployee(EmployeeRequest request) {
-    	
-    	 if (employeeRepository.existsByEmployeeId(request.getEmployeeId())) {
-    	        throw new DuplicateResourceException(
-    	                "Employee ID already exists: "
-    	                + request.getEmployeeId()
-    	        );
-    	    }
 
-    	    if (employeeRepository.existsByEmail(request.getEmail())) {
-    	        throw new DuplicateResourceException(
-    	                "Email already exists: "
-    	                + request.getEmail()
-    	        );
-    	    }
+        if (employeeRepository.existsByEmployeeId(request.getEmployeeId())) {
+            throw new DuplicateResourceException(
+                    "Employee ID already exists: "
+                    + request.getEmployeeId()
+            );
+        }
 
+        if (employeeRepository.existsByEmail(request.getEmail())) {
+            throw new DuplicateResourceException(
+                    "Email already exists: "
+                    + request.getEmail()
+            );
+        }
 
         Employee employee = new Employee();
 
@@ -62,6 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setEmploymentType(request.getEmploymentType());
         employee.setJoiningDate(request.getJoiningDate());
         employee.setStatus(request.getStatus());
+
         Domain domain = domainRepository.findByName(request.getDomainName())
                 .orElseThrow(() ->
                     new RuntimeException(
@@ -79,7 +77,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeResponse> getAllEmployees() {
 
-        return employeeRepository.findAll()
+        return employeeRepository.findByStatusIn(List.of("ACTIVE", "INACTIVE"))
+                .stream()
+                .map(this::convertToResponse)
+                .toList();
+    }
+
+    @Override
+    public List<EmployeeResponse> getFormerEmployees() {
+
+        return employeeRepository.findByStatus("FORMER")
                 .stream()
                 .map(this::convertToResponse)
                 .toList();
@@ -88,24 +95,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeResponse getEmployeeById(Long id) {
 
-    	Employee employee = employeeRepository.findById(id)
-    	        .orElseThrow(() ->
-    	            new ResourceNotFoundException(
-    	                "Employee not found with id: " + id
-    	            )
-    	        );
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                        "Employee not found with id: " + id
+                    )
+                );
+
         return convertToResponse(employee);
     }
 
     @Override
-    public EmployeeResponse updateEmployee(Long id, EmployeeRequest request) {
+    public EmployeeResponse updateEmployee(
+            Long id,
+            EmployeeRequest request) {
 
-    	Employee employee = employeeRepository.findById(id)
-    	        .orElseThrow(() ->
-    	            new ResourceNotFoundException(
-    	                "Employee not found with id: " + id
-    	            )
-    	        );
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                        "Employee not found with id: " + id
+                    )
+                );
 
         employee.setFullName(request.getFullName());
         employee.setEmail(request.getEmail());
@@ -115,6 +125,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setPermanentAddress(request.getPermanentAddress());
         employee.setEmergencyContactName(request.getEmergencyContactName());
         employee.setEmergencyContactPhone(request.getEmergencyContactPhone());
+
         Domain domain = domainRepository.findByName(request.getDomainName())
                 .orElseThrow(() ->
                     new RuntimeException(
@@ -123,6 +134,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 );
 
         employee.setDomain(domain);
+
         employee.setEmploymentType(request.getEmploymentType());
         employee.setJoiningDate(request.getJoiningDate());
         employee.setStatus(request.getStatus());
@@ -135,16 +147,32 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteEmployee(Long id) {
 
-    	Employee employee = employeeRepository.findById(id)
-    	        .orElseThrow(() ->
-    	            new ResourceNotFoundException(
-    	                "Employee not found with id: " + id
-    	            )
-    	        );
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                        "Employee not found with id: " + id
+                    )
+                );
 
-        employeeRepository.delete(employee);
+        // Instead of permanently deleting the employee,
+        // change the status to FORMER.
+        employee.setStatus("FORMER");
+
+        employeeRepository.save(employee);
     }
+    
+    @Override
+    public List<EmployeeResponse> getInternEmployees() {
 
+        return employeeRepository
+                .findByEmploymentTypeAndStatusIn(
+                        "INTERN",
+                        List.of("ACTIVE", "INACTIVE")
+                )
+                .stream()
+                .map(this::convertToResponse)
+                .toList();
+    }
     private EmployeeResponse convertToResponse(Employee employee) {
 
         EmployeeResponse response = new EmployeeResponse();

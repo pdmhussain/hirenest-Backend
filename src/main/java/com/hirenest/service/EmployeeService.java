@@ -18,4 +18,8 @@ public interface EmployeeService {
     EmployeeResponse updateEmployee(Long id, EmployeeRequest request);
 
     void deleteEmployee(Long id);
+    
+    List<EmployeeResponse> getFormerEmployees();
+    
+    List<EmployeeResponse> getInternEmployees();
 }

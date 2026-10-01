@@ -1,6 +1,5 @@
 package com.hirenest.controller;
 
-
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -39,6 +38,14 @@ public class EmployeeController {
         );
     }
 
+    @GetMapping("/former")
+    public ResponseEntity<List<EmployeeResponse>> getFormerEmployees() {
+
+        return ResponseEntity.ok(
+                employeeService.getFormerEmployees()
+        );
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<EmployeeResponse> getEmployeeById(
             @PathVariable Long id) {
@@ -65,5 +72,9 @@ public class EmployeeController {
         employeeService.deleteEmployee(id);
 
         return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/interns")
+    public List<EmployeeResponse> getInternEmployees() {
+        return employeeService.getInternEmployees();
     }
 }
