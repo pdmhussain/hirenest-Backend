@@ -1,6 +1,7 @@
 package com.hirenest.dto;
 
 
+import com.hirenest.enums.BankStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BankDetailsDto {
 
-    private Long EmployeeId;
+    private Long employeeId;
     private String bankName;
 
     private String accountNumber;
@@ -19,5 +20,5 @@ public class BankDetailsDto {
 
     private String accountHolderName;
 
-    private String status;
+    private BankStatus status;
 }

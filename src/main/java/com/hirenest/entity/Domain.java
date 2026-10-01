@@ -1,6 +1,8 @@
 package com.hirenest.entity;
 
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +27,6 @@ public class Domain {
     private String status;
 
     @OneToMany(mappedBy = "domain")
+    @JsonIgnore
     private List<Employee> employees;
 }

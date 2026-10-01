@@ -1,5 +1,6 @@
 package com.hirenest.entity;
 
+import com.hirenest.enums.BankStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -27,5 +28,6 @@ public class BankDetails {
 
     private String accountHolderName;
 
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private BankStatus status;
 }
