@@ -1,15 +1,7 @@
-package com.hirenest.service.impl;
+package com.hirenest.repository;
 
-import com.hirenest.repository.EmployeeRepository;
-import com.hirenest.service.ReportService;
-import org.springframework.stereotype.Service;
+import com.hirenest.entity.Employee;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Service
-public class ReportServiceImpl implements ReportService {
-
-    private final EmployeeRepository employeeRepository;
-
-    public ReportServiceImpl(EmployeeRepository employeeRepository) {
-        this.employeeRepository = employeeRepository;
-    }
+public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 }
