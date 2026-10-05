@@ -1,5 +1,6 @@
 package com.hirenest.repository;
 
+import com.hirenest.dto.EmployeeReportResponse;
 import com.hirenest.dto.RecentEmployeeResponse;
 import com.hirenest.dto.RecentRecordResponse;
 import com.hirenest.entity.EmploymentDetails;
@@ -52,4 +53,20 @@ public interface EmploymentDetailsRepository
         ORDER BY e.joiningDate DESC
     """)
     List<RecentRecordResponse> findRecentRecords(Pageable pageable);
+
+    @Query("""
+        SELECT new com.hirenest.dto.EmployeeReportResponse(
+            e.employee.employeeId,
+            e.employee.fullName,
+            e.employee.email,
+            e.employee.phone,
+            e.domain.name,
+            e.employmentType,
+            e.joiningDate,
+            e.employee.status
+        )
+        FROM EmploymentDetails e
+        ORDER BY e.joiningDate DESC
+    """)
+    List<EmployeeReportResponse> findEmployeeReports();
 }
