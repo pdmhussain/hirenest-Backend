@@ -24,10 +24,6 @@ public class EmployeeDocumentServiceImpl
     private final EmployeeDocumentRepository employeeDocumentRepository;
 
 
-    // =========================================================
-    // CREATE / UPLOAD DOCUMENT
-    // =========================================================
-
     @Override
     public EmployeeDocumentResponse createDocument(
             EmployeeDocumentRequest request) {
@@ -37,27 +33,26 @@ public class EmployeeDocumentServiceImpl
             EmployeeDocument document =
                     new EmployeeDocument();
 
-            // Employee ID
+
             document.setEmployeeId(
                     request.getEmployeeId()
             );
 
-            // Document type
+
             document.setDocumentType(
                     request.getDocumentType()
             );
 
-            // Document name
+
             document.setDocumentName(
                     request.getDocumentName()
             );
 
-            // Upload date
+
             document.setUploadDate(
                     LocalDate.now()
             );
 
-            // Status
             if (request.getStatus() != null
                     && !request.getStatus().isBlank()) {
 
@@ -71,33 +66,29 @@ public class EmployeeDocumentServiceImpl
             }
 
 
-            // =====================================================
-            // STORE FILE AS BLOB
-            // =====================================================
-
             MultipartFile file =
                     request.getFile();
 
             if (file != null && !file.isEmpty()) {
 
-                // Original file name
+
                 document.setFileName(
                         file.getOriginalFilename()
                 );
 
-                // MIME type
+
                 document.setContentType(
                         file.getContentType()
                 );
 
-                // Actual file content
+
                 document.setFileData(
                         file.getBytes()
                 );
             }
 
 
-            // Save to MySQL
+
             EmployeeDocument savedDocument =
                     employeeDocumentRepository.save(
                             document
@@ -114,10 +105,6 @@ public class EmployeeDocumentServiceImpl
         }
     }
 
-
-    // =========================================================
-    // GET DOCUMENT BY ID
-    // =========================================================
 
     @Override
     public EmployeeDocumentResponse getDocumentById(
@@ -137,10 +124,6 @@ public class EmployeeDocumentServiceImpl
     }
 
 
-    // =========================================================
-    // GET ALL DOCUMENTS
-    // =========================================================
-
     @Override
     public List<EmployeeDocumentResponse> getAllDocuments() {
 
@@ -152,10 +135,6 @@ public class EmployeeDocumentServiceImpl
                 .collect(Collectors.toList());
     }
 
-
-    // =========================================================
-    // GET DOCUMENTS BY EMPLOYEE ID
-    // =========================================================
 
     @Override
     public List<EmployeeDocumentResponse>
@@ -171,10 +150,6 @@ public class EmployeeDocumentServiceImpl
     }
 
 
-    // =========================================================
-    // GET DOCUMENTS BY TYPE
-    // =========================================================
-
     @Override
     public List<EmployeeDocumentResponse>
     getDocumentsByType(DocumentType documentType) {
@@ -188,10 +163,6 @@ public class EmployeeDocumentServiceImpl
                 .collect(Collectors.toList());
     }
 
-
-    // =========================================================
-    // UPDATE DOCUMENT
-    // =========================================================
 
     @Override
     public EmployeeDocumentResponse updateDocument(
@@ -211,9 +182,6 @@ public class EmployeeDocumentServiceImpl
                             );
 
 
-            // =====================================================
-            // UPDATE EMPLOYEE ID
-            // =====================================================
 
             if (request.getEmployeeId() != null) {
 
@@ -223,10 +191,6 @@ public class EmployeeDocumentServiceImpl
             }
 
 
-            // =====================================================
-            // UPDATE DOCUMENT TYPE
-            // =====================================================
-
             if (request.getDocumentType() != null) {
 
                 document.setDocumentType(
@@ -235,9 +199,6 @@ public class EmployeeDocumentServiceImpl
             }
 
 
-            // =====================================================
-            // UPDATE DOCUMENT NAME
-            // =====================================================
 
             if (request.getDocumentName() != null
                     && !request.getDocumentName().isBlank()) {
@@ -248,10 +209,6 @@ public class EmployeeDocumentServiceImpl
             }
 
 
-            // =====================================================
-            // UPDATE STATUS
-            // =====================================================
-
             if (request.getStatus() != null
                     && !request.getStatus().isBlank()) {
 
@@ -261,9 +218,6 @@ public class EmployeeDocumentServiceImpl
             }
 
 
-            // =====================================================
-            // REPLACE EXISTING BLOB
-            // =====================================================
 
             MultipartFile newFile =
                     request.getFile();
@@ -271,29 +225,29 @@ public class EmployeeDocumentServiceImpl
             if (newFile != null
                     && !newFile.isEmpty()) {
 
-                // Replace old file name
+
                 document.setFileName(
                         newFile.getOriginalFilename()
                 );
 
-                // Replace MIME type
+
                 document.setContentType(
                         newFile.getContentType()
                 );
 
-                // Replace old BLOB with new BLOB
+
                 document.setFileData(
                         newFile.getBytes()
                 );
 
-                // Update upload date
+
                 document.setUploadDate(
                         LocalDate.now()
                 );
             }
 
 
-            // Save updated document
+
             EmployeeDocument updatedDocument =
                     employeeDocumentRepository.save(
                             document
@@ -311,10 +265,6 @@ public class EmployeeDocumentServiceImpl
     }
 
 
-    // =========================================================
-    // DELETE DOCUMENT
-    // =========================================================
-
     @Override
     public void deleteDocument(Long documentId) {
 
@@ -328,17 +278,12 @@ public class EmployeeDocumentServiceImpl
                                 )
                         );
 
-        // Delete database record.
-        // BLOB is deleted automatically with the record.
+
         employeeDocumentRepository.delete(
                 document
         );
     }
 
-
-    // =========================================================
-    // GET ACTUAL FILE / BLOB
-    // =========================================================
 
     @Override
     public byte[] getDocumentFile(
@@ -367,10 +312,6 @@ public class EmployeeDocumentServiceImpl
     }
 
 
-    // =========================================================
-    // GET CONTENT TYPE
-    // =========================================================
-
     @Override
     public String getDocumentContentType(
             Long documentId) {
@@ -389,9 +330,6 @@ public class EmployeeDocumentServiceImpl
     }
 
 
-    // =========================================================
-    // GET ORIGINAL FILE NAME
-    // =========================================================
 
     @Override
     public String getDocumentFileName(
@@ -411,9 +349,6 @@ public class EmployeeDocumentServiceImpl
     }
 
 
-    // =========================================================
-    // ENTITY → RESPONSE DTO
-    // =========================================================
 
     private EmployeeDocumentResponse mapToResponse(
             EmployeeDocument document) {

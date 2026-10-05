@@ -25,10 +25,6 @@ public class EmployeeDocumentController {
     private final EmployeeDocumentService employeeDocumentService;
 
 
-    // =========================================================
-    // CREATE / UPLOAD DOCUMENT
-    // =========================================================
-
     @PostMapping(
             value = "",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE
@@ -45,10 +41,6 @@ public class EmployeeDocumentController {
     }
 
 
-    // =========================================================
-    // GET DOCUMENT BY ID
-    // =========================================================
-
     @GetMapping("/{documentId}")
     public ResponseEntity<EmployeeDocumentResponse> getDocumentById(
             @PathVariable Long documentId) {
@@ -61,10 +53,6 @@ public class EmployeeDocumentController {
     }
 
 
-    // =========================================================
-    // GET ALL DOCUMENTS
-    // =========================================================
-
     @GetMapping
     public ResponseEntity<List<EmployeeDocumentResponse>>
     getAllDocuments() {
@@ -75,11 +63,6 @@ public class EmployeeDocumentController {
 
         return ResponseEntity.ok(response);
     }
-
-
-    // =========================================================
-    // GET DOCUMENTS BY EMPLOYEE ID
-    // =========================================================
 
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<List<EmployeeDocumentResponse>>
@@ -94,9 +77,6 @@ public class EmployeeDocumentController {
     }
 
 
-    // =========================================================
-    // GET DOCUMENTS BY DOCUMENT TYPE
-    // =========================================================
 
     @GetMapping("/type/{documentType}")
     public ResponseEntity<List<EmployeeDocumentResponse>>
@@ -110,10 +90,6 @@ public class EmployeeDocumentController {
         return ResponseEntity.ok(response);
     }
 
-
-    // =========================================================
-    // UPDATE DOCUMENT
-    // =========================================================
 
     @PutMapping(
             value = "/{documentId}",
@@ -132,11 +108,6 @@ public class EmployeeDocumentController {
         return ResponseEntity.ok(response);
     }
 
-
-    // =========================================================
-    // DELETE DOCUMENT
-    // =========================================================
-
     @DeleteMapping("/{documentId}")
     public ResponseEntity<Void> deleteDocument(
             @PathVariable Long documentId) {
@@ -151,16 +122,6 @@ public class EmployeeDocumentController {
     }
 
 
-    // =========================================================
-    // VIEW DOCUMENT
-    // =========================================================
-    //
-    // Browser will try to open the document.
-    //
-    // Example:
-    // GET /api/employee-documents/1/view
-    //
-    // =========================================================
 
     @GetMapping("/{documentId}/view")
     public ResponseEntity<byte[]> viewDocument(
@@ -199,17 +160,6 @@ public class EmployeeDocumentController {
                 .body(file);
     }
 
-
-    // =========================================================
-    // DOWNLOAD DOCUMENT
-    // =========================================================
-    //
-    // Browser will download the document.
-    //
-    // Example:
-    // GET /api/employee-documents/1/download
-    //
-    // =========================================================
 
     @GetMapping("/{documentId}/download")
     public ResponseEntity<byte[]> downloadDocument(
