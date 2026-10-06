@@ -7,11 +7,12 @@ import java.util.List;
 
 public interface PfDetailsService {
 
-    public PFDetails createPfDetails(PfDetailsDto request);
 
-    public List<PFDetails> getAllPfDetails();
+    public PFDetails createPfDetails(
+            PfDetailsDto request,
+            String email);
 
-    public PFDetails getByEmployeeId(Long employeeId);
+    List<PFDetails> getAllPfDetails();
 
-    public void deletePfDetails(Long id);
+    PFDetails getByEmployeeId(Long employeeId);
 }
