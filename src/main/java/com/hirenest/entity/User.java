@@ -1,6 +1,5 @@
 package com.hirenest.entity;
 
-
 import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
@@ -28,14 +27,38 @@ public class User {
     private String password;
 
     @Column(nullable = false)
-    private String role;
+    private String role = "HR";
 
     @Column(nullable = false)
-    private String status;
+    private String status = "ACTIVE";
+
+    @Column(nullable = false)
+    private boolean active = true;
+
+    @Column(nullable = false)
+    private boolean emailVerified = false;
 
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    public User(String email, String password, String role) {
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.username = email;
+        this.status = "ACTIVE";
+        this.active = true;
+        this.emailVerified = false;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public boolean isEmailVerified() {
+        return emailVerified;
+    }
 
     @PrePersist
     protected void onCreate() {
