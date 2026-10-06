@@ -2,10 +2,11 @@ package com.hirenest.controller;
 
 import com.hirenest.dto.OfferLetterRequest;
 import com.hirenest.dto.OfferLetterResponse;
+import com.hirenest.entity.OfferLetter;
 import com.hirenest.service.OfferLetterService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,73 +14,181 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/offer-letters")
-@RequiredArgsConstructor
 public class OfferLetterController {
 
     private final OfferLetterService offerLetterService;
 
+    public OfferLetterController(
+            OfferLetterService offerLetterService) {
 
-    @PostMapping
-    public ResponseEntity<OfferLetterResponse> createOfferLetter(
-            @Valid @RequestBody OfferLetterRequest request) {
-
-        OfferLetterResponse response =
-                offerLetterService.createOfferLetter(request);
-
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        this.offerLetterService = offerLetterService;
     }
 
+    // CREATE + PDF UPLOAD
+    @PostMapping(
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<OfferLetterResponse>
+    createOfferLetter(
+            @Valid @ModelAttribute OfferLetterRequest request) {
 
+        return ResponseEntity.ok(
+                offerLetterService.createOfferLetter(request)
+        );
+    }
+
+    // GET BY ID
     @GetMapping("/{id}")
-    public ResponseEntity<OfferLetterResponse> getOfferLetterById(
+    public ResponseEntity<OfferLetterResponse>
+    getOfferLetterById(
             @PathVariable Long id) {
 
-        OfferLetterResponse response =
-                offerLetterService.getOfferLetterById(id);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                offerLetterService
+                        .getOfferLetterById(id)
+        );
     }
 
-
+    // GET ALL
     @GetMapping
-    public ResponseEntity<List<OfferLetterResponse>> getAllOfferLetters() {
+    public ResponseEntity<List<OfferLetterResponse>>
+    getAllOfferLetters() {
 
-        List<OfferLetterResponse> response =
-                offerLetterService.getAllOfferLetters();
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                offerLetterService
+                        .getAllOfferLetters()
+        );
     }
 
-
+    // GET BY EMPLOYEE
     @GetMapping("/employee/{employeeId}")
-    public ResponseEntity<OfferLetterResponse> getOfferLetterByEmployeeId(
+    public ResponseEntity<OfferLetterResponse>
+    getOfferLetterByEmployeeId(
             @PathVariable Long employeeId) {
 
-        OfferLetterResponse response =
-                offerLetterService.getOfferLetterByEmployeeId(employeeId);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                offerLetterService
+                        .getOfferLetterByEmployeeId(
+                                employeeId
+                        )
+        );
     }
 
-
-    @PutMapping("/{id}")
-    public ResponseEntity<OfferLetterResponse> updateOfferLetter(
+    // UPDATE + OPTIONAL PDF REPLACEMENT
+    @PutMapping(
+            value = "/{id}",
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE
+    )
+    public ResponseEntity<OfferLetterResponse>
+    updateOfferLetter(
             @PathVariable Long id,
-            @Valid @RequestBody OfferLetterRequest request) {
+            @Valid @ModelAttribute OfferLetterRequest request) {
 
-        OfferLetterResponse response =
-                offerLetterService.updateOfferLetter(id, request);
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                offerLetterService.updateOfferLetter(
+                        id,
+                        request
+                )
+        );
     }
 
-
+    // DELETE
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteOfferLetter(
+    public ResponseEntity<String>
+    deleteOfferLetter(
             @PathVariable Long id) {
 
         offerLetterService.deleteOfferLetter(id);
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(
+                "Offer letter deleted successfully"
+        );
+    }
+
+    // VIEW PDF IN BROWSER
+    @GetMapping("/{id}/view")
+    public ResponseEntity<byte[]> viewOfferLetter(
+            @PathVariable Long id) {
+
+        OfferLetter offerLetter =
+                offerLetterService
+                        .getOfferLetterEntityById(id);
+
+        if (offerLetter.getOfferLetterFile() == null) {
+
+            return ResponseEntity.notFound()
+                    .build();
+        }
+
+        MediaType mediaType =
+                getMediaType(
+                        offerLetter.getContentType()
+                );
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "inline; filename=\"" +
+                                offerLetter.getFileName() +
+                                "\""
+                )
+                .body(
+                        offerLetter.getOfferLetterFile()
+                );
+    }
+
+    // DOWNLOAD PDF
+    @GetMapping("/{id}/download")
+    public ResponseEntity<byte[]> downloadOfferLetter(
+            @PathVariable Long id) {
+
+        OfferLetter offerLetter =
+                offerLetterService
+                        .getOfferLetterEntityById(id);
+
+        if (offerLetter.getOfferLetterFile() == null) {
+
+            return ResponseEntity.notFound()
+                    .build();
+        }
+
+        MediaType mediaType =
+                getMediaType(
+                        offerLetter.getContentType()
+                );
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .header(
+                        HttpHeaders.CONTENT_DISPOSITION,
+                        "attachment; filename=\"" +
+                                offerLetter.getFileName() +
+                                "\""
+                )
+                .body(
+                        offerLetter.getOfferLetterFile()
+                );
+    }
+
+    private MediaType getMediaType(
+            String contentType) {
+
+        if (contentType == null ||
+                contentType.isBlank()) {
+
+            return MediaType.APPLICATION_PDF;
+        }
+
+        try {
+
+            return MediaType.parseMediaType(
+                    contentType
+            );
+
+        } catch (Exception e) {
+
+            return MediaType.APPLICATION_PDF;
+        }
     }
 }

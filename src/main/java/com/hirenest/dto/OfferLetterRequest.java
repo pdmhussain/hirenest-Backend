@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -24,7 +25,7 @@ public class OfferLetterRequest {
     @NotNull(message = "Offer date is required")
     private LocalDate offerDate;
 
-    private String offerLetterFile;
+    private MultipartFile offerLetterFile;
 
     @NotNull(message = "Employment type is required")
     private EmploymentType employmentType;

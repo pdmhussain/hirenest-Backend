@@ -20,7 +20,7 @@ public class OfferLetterResponse {
 
     private LocalDate offerDate;
 
-    private String offerLetterFile;
+//    private String offerLetterFile;
 
     private EmploymentType employmentType;
 
@@ -31,4 +31,8 @@ public class OfferLetterResponse {
     private LocalDate joiningDate;
 
     private OfferStatus offerStatus;
+
+    private String fileName;
+
+    private String contentType;
 }

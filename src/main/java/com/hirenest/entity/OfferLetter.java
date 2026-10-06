@@ -28,8 +28,15 @@ public class OfferLetter {
     @Column(name = "offer_date", nullable = false)
     private LocalDate offerDate;
 
-    @Column(name = "offer_letter_file")
-    private String offerLetterFile;
+    @Lob
+    @Column(name = "offer_letter_file", columnDefinition = "LONGBLOB")
+    private byte[] offerLetterFile;
+
+    @Column(name = "file_name")
+    private String fileName;
+
+    @Column(name = "content_type")
+    private String contentType;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "employment_type", nullable = false)
