@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface BankDetailsRepository extends JpaRepository<BankDetails,Long> {
 
     Optional<BankDetails> findByEmployee_Id(Long employeeId);
+    boolean existsByEmployee_Id(Long employeeId);
 }

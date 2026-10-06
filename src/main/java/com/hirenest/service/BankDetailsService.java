@@ -7,14 +7,11 @@ import java.util.List;
 
 public interface BankDetailsService {
 
-    BankDetails createBankDetails(BankDetailsDto request);
+    BankDetails createBankDetails(BankDetailsDto request, String email);
 
     List<BankDetails> getAllBankDetails();
 
     BankDetails getByEmployeeId(Long employeeId);
-
-    void deleteBankDetails(Long id);
-
 
 
 }

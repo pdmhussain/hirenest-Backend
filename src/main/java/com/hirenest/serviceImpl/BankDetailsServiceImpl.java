@@ -6,7 +6,9 @@ import com.hirenest.entity.Employee;
 import com.hirenest.repository.BankDetailsRepository;
 import com.hirenest.repository.EmployeeRepository;
 import com.hirenest.service.BankDetailsService;
+
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,46 +17,55 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BankDetailsServiceImpl implements BankDetailsService {
 
-    private final BankDetailsRepository repository;
+    private final BankDetailsRepository bankDetailsRepository;
     private final EmployeeRepository employeeRepository;
 
+
     @Override
-    public BankDetails createBankDetails(BankDetailsDto request) {
-        BankDetails bankDetails = new BankDetails();
+    public BankDetails createBankDetails(
+            BankDetailsDto request,
+            String email) {
+
         Employee employee = employeeRepository
-                .findById(request.getEmployeeId())
+                .findByEmail(email)
                 .orElseThrow(() ->
                         new RuntimeException(
-                                "Employee not found with ID: "
-                                        + request.getEmployeeId()
-                        )
-                );
+                                "Employee not found with email: " + email));
+
+        if (bankDetailsRepository.findByEmployee_Id(employee.getId()).isPresent()) {
+            throw new RuntimeException(
+                    "Bank details already exist for this employee");
+        }
+
+        BankDetails bankDetails = new BankDetails();
+
         bankDetails.setEmployee(employee);
-        bankDetails.setAccountHolderName(request.getAccountHolderName());
         bankDetails.setBankName(request.getBankName());
         bankDetails.setAccountNumber(request.getAccountNumber());
         bankDetails.setIfscCode(request.getIfscCode());
+        bankDetails.setAccountHolderName(request.getAccountHolderName());
         bankDetails.setStatus(request.getStatus());
 
-
-        return repository.save(bankDetails);
+        return bankDetailsRepository.save(bankDetails);
     }
 
     @Override
     public List<BankDetails> getAllBankDetails() {
-        List<BankDetails> list = repository.findAll();
-        return list;
+
+        return bankDetailsRepository.findAll();
     }
+
 
     @Override
     public BankDetails getByEmployeeId(Long employeeId) {
-        return repository.findByEmployee_Id(employeeId).orElseThrow(() -> new
-                RuntimeException("Employee  not found for employee ID: " + employeeId));
 
-    }
-
-    @Override
-    public void deleteBankDetails(Long id) {
-            repository.deleteById(id);
+        return bankDetailsRepository
+                .findByEmployee_Id(employeeId)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Bank details not found for employee ID: "
+                                        + employeeId
+                        )
+                );
     }
 }
