@@ -3,6 +3,7 @@ package com.hirenest.service.impl;
 import com.hirenest.dto.CompensationReportResponse;
 import com.hirenest.dto.EmployeeReportResponse;
 import com.hirenest.dto.ProbationReportResponse;
+import com.hirenest.repository.EmployeeRepository;
 import com.hirenest.repository.EmploymentDetailsRepository;
 import com.hirenest.repository.ProbationDetailsRepository;
 import com.hirenest.repository.SalaryDetailsRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
+    private final EmployeeRepository employeeRepository;
     private final EmploymentDetailsRepository employmentDetailsRepository;
     private final ProbationDetailsRepository probationDetailsRepository;
     private final SalaryDetailsRepository salaryDetailsRepository;
@@ -46,5 +48,28 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<CompensationReportResponse> getCompensationReports() {
         return salaryDetailsRepository.findCompensationReports();
+    }
+
+    @Override
+    public List<EmployeeReportResponse> searchEmployees(
+            String employeeId,
+            String name,
+            String email,
+            String phone,
+            String domain,
+            String employmentType,
+            LocalDate joiningDate,
+            String status
+    ) {
+        return employeeRepository.searchEmployees(
+                employeeId,
+                name,
+                email,
+                phone,
+                domain,
+                employmentType,
+                joiningDate,
+                status
+        );
     }
 }

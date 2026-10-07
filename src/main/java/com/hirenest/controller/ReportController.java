@@ -58,4 +58,31 @@ public class ReportController {
                 reportService.getCompensationReports()
         );
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<EmployeeReportResponse>> searchEmployees(
+            @RequestParam(required = false) String employeeId,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String email,
+            @RequestParam(required = false) String phone,
+            @RequestParam(required = false) String domain,
+            @RequestParam(required = false) String employmentType,
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate joiningDate,
+            @RequestParam(required = false) String status
+    ) {
+        return ResponseEntity.ok(
+                reportService.searchEmployees(
+                        employeeId,
+                        name,
+                        email,
+                        phone,
+                        domain,
+                        employmentType,
+                        joiningDate,
+                        status
+                )
+        );
+    }
 }

@@ -20,4 +20,15 @@ public interface ReportService {
     );
 
     List<CompensationReportResponse> getCompensationReports();
+
+    List<EmployeeReportResponse> searchEmployees(
+            String employeeId,
+            String name,
+            String email,
+            String phone,
+            String domain,
+            String employmentType,
+            LocalDate joiningDate,
+            String status
+    );
 }
