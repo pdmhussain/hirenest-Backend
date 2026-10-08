@@ -1,5 +1,7 @@
 package com.hirenest.entity;
 
+import com.hirenest.enums.PFStatus;
+import com.hirenest.enums.UANStatus;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,7 +25,9 @@ public class PFDetails {
 
     private String uan;
 
-    private String pfStatus;
+    @Enumerated(EnumType.STRING)
+    private PFStatus pfStatus;
 
-    private String uanStatus;
+    @Enumerated(EnumType.STRING)
+    private UANStatus uanStatus;
 }
