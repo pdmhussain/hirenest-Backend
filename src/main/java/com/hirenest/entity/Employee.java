@@ -46,4 +46,22 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "domain_id")
     private Domain domain;
+    
+    
+    private String employmentType;
+
+    private LocalDate joiningDate;
+    
+    public void SetDomainName(String name) {
+        if (this.domain == null) {
+            this.domain = new Domain();
+        }
+
+        this.domain.setName(name);
+    }
+    public String getDomainName() {
+    	
+    	return domain.getName();
+    }
+    
 }
