@@ -3,6 +3,11 @@ package com.hirenest.repository;
 
 import java.util.List;
 import java.util.Optional;
+import com.hirenest.dto.EmployeeReportResponse;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.time.LocalDate;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -25,20 +30,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             String employmentType,
             List<String> statuses
     );
-
-}
-import com.hirenest.dto.EmployeeReportResponse;
-import com.hirenest.entity.Employee;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-
-import java.time.LocalDate;
-import java.util.List;
-
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
-
-    @Query("""
+        @Query("""
         SELECT new com.hirenest.dto.EmployeeReportResponse(
             e.employeeId,
             e.fullName,
@@ -88,4 +80,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
             @Param("joiningDate") LocalDate joiningDate,
             @Param("status") String status
     );
+
 }
