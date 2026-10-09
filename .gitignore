@@ -1,0 +1,7 @@
+target/
+.idea/
+*.iml
+.vscode/
+.mvn/wrapper/maven-wrapper.jar
+# local DB credentials - do not push real passwords
+src/main/resources/application-local.properties
