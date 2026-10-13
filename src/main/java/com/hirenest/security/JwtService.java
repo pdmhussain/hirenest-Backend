@@ -1,12 +1,17 @@
 
 package com.hirenest.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
@@ -21,6 +26,7 @@ public class JwtService {
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expiration-ms}") long expirationMs) {
 
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         if (secret == null || secret.trim().isEmpty()) {
             throw new IllegalArgumentException(
                     "JWT secret is empty. Check the JWT_SECRET environment variable."

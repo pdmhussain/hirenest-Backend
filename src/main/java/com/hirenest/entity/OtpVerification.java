@@ -6,7 +6,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "otp_verifications")
 public class OtpVerification {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
@@ -18,6 +20,7 @@ public class OtpVerification {
     @Column(nullable = false)
     private String purpose;
 
+    private String pendingUsername;
     private String pendingPasswordHash;
     private String pendingRole;
     private String resetToken;
@@ -38,6 +41,7 @@ public class OtpVerification {
     public String getEmail() { return email; }
     public String getOtpHash() { return otpHash; }
     public String getPurpose() { return purpose; }
+    public String getPendingUsername() { return pendingUsername; }
     public String getPendingPasswordHash() { return pendingPasswordHash; }
     public String getPendingRole() { return pendingRole; }
     public String getResetToken() { return resetToken; }
@@ -50,6 +54,7 @@ public class OtpVerification {
     public void setEmail(String email) { this.email = email; }
     public void setOtpHash(String otpHash) { this.otpHash = otpHash; }
     public void setPurpose(String purpose) { this.purpose = purpose; }
+    public void setPendingUsername(String pendingUsername) { this.pendingUsername = pendingUsername; }
     public void setPendingPasswordHash(String pendingPasswordHash) { this.pendingPasswordHash = pendingPasswordHash; }
     public void setPendingRole(String pendingRole) { this.pendingRole = pendingRole; }
     public void setResetToken(String resetToken) { this.resetToken = resetToken; }
