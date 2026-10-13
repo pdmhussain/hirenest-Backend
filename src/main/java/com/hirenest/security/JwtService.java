@@ -1,3 +1,4 @@
+
 package com.hirenest.security;
 
 import io.jsonwebtoken.Claims;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
+import java.util.Base64;
 import java.util.Date;
 
 @Service
@@ -18,7 +20,22 @@ public class JwtService {
     public JwtService(
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expiration-ms}") long expirationMs) {
-        this.key = Keys.hmacShaKeyFor(java.util.Base64.getDecoder().decode(secret));
+
+        if (secret == null || secret.trim().isEmpty()) {
+            throw new IllegalArgumentException(
+                    "JWT secret is empty. Check the JWT_SECRET environment variable."
+            );
+        }
+
+        byte[] keyBytes = Base64.getDecoder().decode(secret.trim());
+
+        if (keyBytes.length < 32) {
+            throw new IllegalArgumentException(
+                    "JWT secret must decode to at least 32 bytes."
+            );
+        }
+
+        this.key = Keys.hmacShaKeyFor(keyBytes);
         this.expirationMs = expirationMs;
     }
 
@@ -41,7 +58,9 @@ public class JwtService {
     public boolean isValid(String token, String username) {
         try {
             Claims claims = getClaims(token);
+
             return username.equals(claims.getSubject())
+                    && claims.getExpiration() != null
                     && claims.getExpiration().after(new Date());
         } catch (Exception e) {
             return false;
