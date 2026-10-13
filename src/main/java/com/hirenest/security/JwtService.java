@@ -1,13 +1,16 @@
 package com.hirenest.security;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import java.nio.charset.StandardCharsets;
+import java.util.Date;
+
+import javax.crypto.SecretKey;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.crypto.SecretKey;
-import java.util.Date;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtService {
@@ -18,7 +21,8 @@ public class JwtService {
     public JwtService(
             @Value("${app.jwt.secret}") String secret,
             @Value("${app.jwt.expiration-ms}") long expirationMs) {
-        this.key = Keys.hmacShaKeyFor(java.util.Base64.getDecoder().decode(secret));
+
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationMs = expirationMs;
     }
 
