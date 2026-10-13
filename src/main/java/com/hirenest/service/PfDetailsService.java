@@ -9,10 +9,13 @@ public interface PfDetailsService {
 
 
     public PFDetails createPfDetails(
-            PfDetailsDto request,
+            PfDetailsDto req,
             String email);
 
     List<PFDetails> getAllPfDetails();
 
     PFDetails getByEmployeeId(Long employeeId);
+
+
+    void deletePfDetails(Long id);
 }

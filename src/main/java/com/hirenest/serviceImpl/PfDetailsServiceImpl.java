@@ -70,4 +70,19 @@ public class PfDetailsServiceImpl
                         )
                 );
     }
+
+    @Override
+    public void deletePfDetails(Long id) {
+
+        PFDetails pfDetails = pfDetailsRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "PF details not found with ID: " + id
+                        )
+                );
+
+        pfDetailsRepository.delete(pfDetails);
+    }
+
 }

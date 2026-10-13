@@ -67,4 +67,14 @@ public class PfDetailsController {
                 service.getByEmployeeId(employeeId)
         );
     }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deletePfDetails(
+            @PathVariable Long id) {
+        service.deletePfDetails(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
 }

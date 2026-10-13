@@ -1,9 +1,6 @@
 package com.hirenest.dto;
 
 
-import com.hirenest.entity.Employee;
-
-
 import com.hirenest.enums.PFStatus;
 import com.hirenest.enums.UANStatus;
 import lombok.AllArgsConstructor;

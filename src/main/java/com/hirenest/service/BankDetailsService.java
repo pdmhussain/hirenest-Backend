@@ -13,5 +13,11 @@ public interface BankDetailsService {
 
     BankDetails getByEmployeeId(Long employeeId);
 
+    BankDetails updateBankDetails(Long id, BankDetailsDto request);
+
+    void deleteBankDetails(Long id);
+
+
+
 
 }

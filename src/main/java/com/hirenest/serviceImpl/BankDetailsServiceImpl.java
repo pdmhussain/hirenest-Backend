@@ -68,4 +68,40 @@ public class BankDetailsServiceImpl implements BankDetailsService {
                         )
                 );
     }
+
+    // 4. Update Bank Details by Bank Details ID
+    @Override
+    public BankDetails updateBankDetails(
+            Long id,
+            BankDetailsDto request) {
+
+        BankDetails bankDetails = bankDetailsRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Bank details not found with ID: " + id));
+
+        bankDetails.setBankName(request.getBankName());
+        bankDetails.setAccountNumber(request.getAccountNumber());
+        bankDetails.setIfscCode(request.getIfscCode());
+        bankDetails.setAccountHolderName(
+                request.getAccountHolderName());
+        bankDetails.setStatus(request.getStatus());
+
+        return bankDetailsRepository.save(bankDetails);
+    }
+
+    // 5. Delete Bank Details by Bank Details ID
+    @Override
+    public void deleteBankDetails(Long id) {
+
+        BankDetails bankDetails = bankDetailsRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Bank details not found with ID: " + id));
+
+        bankDetailsRepository.delete(bankDetails);
+    }
 }
+
