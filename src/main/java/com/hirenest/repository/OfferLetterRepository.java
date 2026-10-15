@@ -8,7 +8,7 @@ import java.util.Optional;
 public interface OfferLetterRepository
         extends JpaRepository<OfferLetter, Long> {
 
-    Optional<OfferLetter> findByEmployeeId(Long employeeId);
+    Optional<OfferLetter> findByEmployeeId(String employeeId);
 
     Optional<OfferLetter> findByOfferLetterNumber(
             String offerLetterNumber

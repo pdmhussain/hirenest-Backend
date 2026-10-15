@@ -1,5 +1,6 @@
 package com.hirenest.dto;
 
+import com.hirenest.enums.DocumentStatus;
 import com.hirenest.enums.DocumentType;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,7 @@ public class EmployeeDocumentResponse {
 
     private Long documentId;
 
-    private Long employeeId;
+    private String employeeId;
 
     private DocumentType documentType;
 
@@ -24,5 +25,5 @@ public class EmployeeDocumentResponse {
 
     private String contentType;
 
-    private String status;
+    private DocumentStatus status;
 }

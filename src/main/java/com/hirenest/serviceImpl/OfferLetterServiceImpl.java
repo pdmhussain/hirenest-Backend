@@ -76,7 +76,7 @@ public class OfferLetterServiceImpl implements OfferLetterService {
 
     @Override
     public OfferLetterResponse getOfferLetterByEmployeeId(
-            Long employeeId) {
+            String employeeId) {
 
         OfferLetter offerLetter =
                 offerLetterRepository
@@ -118,9 +118,7 @@ public class OfferLetterServiceImpl implements OfferLetterService {
 
 
 
-        offerLetter.setEmployeeId(
-                request.getEmployeeId()
-        );
+        offerLetter.setEmployeeId(request.getEmployeeId());
 
         offerLetter.setOfferLetterNumber(
                 request.getOfferLetterNumber()
@@ -219,9 +217,7 @@ public class OfferLetterServiceImpl implements OfferLetterService {
             OfferLetter offerLetter) {
 
 
-        offerLetter.setEmployeeId(
-                request.getEmployeeId()
-        );
+        offerLetter.setEmployeeId(request.getEmployeeId());
 
         offerLetter.setOfferLetterNumber(
                 request.getOfferLetterNumber()

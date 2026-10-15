@@ -20,7 +20,7 @@ public class OfferLetter {
     private Long id;
 
     @Column(name = "employee_id", nullable = false)
-    private Long employeeId;
+    private String employeeId;
 
     @Column(name = "offer_letter_number", nullable = false, unique = true)
     private String offerLetterNumber;

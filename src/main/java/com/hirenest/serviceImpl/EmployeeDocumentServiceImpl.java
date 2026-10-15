@@ -1,8 +1,10 @@
+
 package com.hirenest.serviceImpl;
 
 import com.hirenest.dto.EmployeeDocumentRequest;
 import com.hirenest.dto.EmployeeDocumentResponse;
 import com.hirenest.entity.EmployeeDocument;
+import com.hirenest.enums.DocumentStatus;
 import com.hirenest.enums.DocumentType;
 import com.hirenest.exception.BadRequestException;
 import com.hirenest.exception.ResourceNotFoundException;
@@ -25,26 +27,25 @@ public class EmployeeDocumentServiceImpl
 
     private final EmployeeDocumentRepository employeeDocumentRepository;
 
+    // Create a new employee document
     @Override
     public EmployeeDocumentResponse createDocument(
             EmployeeDocumentRequest request) {
 
         try {
-
-            // Validate file
             MultipartFile file = request.getFile();
 
+            // Validate uploaded file
             if (file == null || file.isEmpty()) {
                 throw new BadRequestException(
-                        "Document file is required");
+                        "Document file is required"
+                );
             }
 
-            EmployeeDocument document =
-                    new EmployeeDocument();
+            EmployeeDocument document = new EmployeeDocument();
 
-            document.setEmployeeId(
-                    request.getEmployeeId()
-            );
+            // Set employee and document details
+            document.setEmployeeId(request.getEmployeeId());
 
             document.setDocumentType(
                     request.getDocumentType()
@@ -54,24 +55,16 @@ public class EmployeeDocumentServiceImpl
                     request.getDocumentName()
             );
 
-            document.setUploadDate(
-                    LocalDate.now()
-            );
+            document.setUploadDate(LocalDate.now());
 
-            // Set status
-            if (request.getStatus() != null
-                    && !request.getStatus().isBlank()) {
-
-                document.setStatus(
-                        request.getStatus()
-                );
-
+            // Default status to PENDING
+            if (request.getStatus() == null) {
+                document.setStatus(DocumentStatus.PENDING);
             } else {
-
-                document.setStatus("PENDING");
+                document.setStatus(request.getStatus());
             }
 
-            // File information
+            // Store uploaded file information
             document.setFileName(
                     file.getOriginalFilename()
             );
@@ -80,32 +73,27 @@ public class EmployeeDocumentServiceImpl
                     file.getContentType()
             );
 
-            document.setFileData(
-                    file.getBytes()
-            );
+            document.setFileData(file.getBytes());
 
             EmployeeDocument savedDocument =
-                    employeeDocumentRepository.save(
-                            document
-                    );
+                    employeeDocumentRepository.save(document);
 
             return mapToResponse(savedDocument);
 
         } catch (IOException e) {
-
             throw new BadRequestException(
                     "Failed to upload document"
             );
         }
     }
 
+    // Get document by ID
     @Override
     public EmployeeDocumentResponse getDocumentById(
             Long documentId) {
 
         EmployeeDocument document =
-                employeeDocumentRepository
-                        .findById(documentId)
+                employeeDocumentRepository.findById(documentId)
                         .orElseThrow(() ->
                                 new ResourceNotFoundException(
                                         "Document not found with ID: "
@@ -116,33 +104,35 @@ public class EmployeeDocumentServiceImpl
         return mapToResponse(document);
     }
 
+    // Get all documents
     @Override
     public List<EmployeeDocumentResponse> getAllDocuments() {
 
+        return employeeDocumentRepository.findAll()
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+
+    // Get documents by employee ID
+    @Override
+    public List<EmployeeDocumentResponse> getDocumentsByEmployeeId(
+            Long employeeId) {
+
         List<EmployeeDocument> documents =
-                employeeDocumentRepository.findAll();
+                employeeDocumentRepository.findByEmployeeId(
+                        String.valueOf(employeeId)
+                );
 
         return documents.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
+    // Get documents by document type
     @Override
-    public List<EmployeeDocumentResponse>
-    getDocumentsByEmployeeId(Long employeeId) {
-
-        List<EmployeeDocument> documents =
-                employeeDocumentRepository
-                        .findByEmployeeId(employeeId);
-
-        return documents.stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<EmployeeDocumentResponse>
-    getDocumentsByType(DocumentType documentType) {
+    public List<EmployeeDocumentResponse> getDocumentsByType(
+            DocumentType documentType) {
 
         if (documentType == null) {
             throw new BadRequestException(
@@ -151,24 +141,24 @@ public class EmployeeDocumentServiceImpl
         }
 
         List<EmployeeDocument> documents =
-                employeeDocumentRepository
-                        .findByDocumentType(documentType);
+                employeeDocumentRepository.findByDocumentType(
+                        documentType
+                );
 
         return documents.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
+    // Update an existing document
     @Override
     public EmployeeDocumentResponse updateDocument(
             Long documentId,
             EmployeeDocumentRequest request) {
 
         try {
-
             EmployeeDocument document =
-                    employeeDocumentRepository
-                            .findById(documentId)
+                    employeeDocumentRepository.findById(documentId)
                             .orElseThrow(() ->
                                     new ResourceNotFoundException(
                                             "Document not found with ID: "
@@ -178,7 +168,6 @@ public class EmployeeDocumentServiceImpl
 
             // Update employee ID if provided
             if (request.getEmployeeId() != null) {
-
                 document.setEmployeeId(
                         request.getEmployeeId()
                 );
@@ -186,7 +175,6 @@ public class EmployeeDocumentServiceImpl
 
             // Update document type
             if (request.getDocumentType() != null) {
-
                 document.setDocumentType(
                         request.getDocumentType()
                 );
@@ -201,21 +189,17 @@ public class EmployeeDocumentServiceImpl
                 );
             }
 
-            // Update status
-            if (request.getStatus() != null
-                    && !request.getStatus().isBlank()) {
-
+            // Update status if provided
+            if (request.getStatus() != null) {
                 document.setStatus(
                         request.getStatus()
                 );
             }
 
-            // Replace file only if new file is provided
-            MultipartFile newFile =
-                    request.getFile();
+            // Replace file only when a new file is provided
+            MultipartFile newFile = request.getFile();
 
-            if (newFile != null
-                    && !newFile.isEmpty()) {
+            if (newFile != null && !newFile.isEmpty()) {
 
                 document.setFileName(
                         newFile.getOriginalFilename()
@@ -229,32 +213,27 @@ public class EmployeeDocumentServiceImpl
                         newFile.getBytes()
                 );
 
-                document.setUploadDate(
-                        LocalDate.now()
-                );
+                document.setUploadDate(LocalDate.now());
             }
 
             EmployeeDocument updatedDocument =
-                    employeeDocumentRepository.save(
-                            document
-                    );
+                    employeeDocumentRepository.save(document);
 
             return mapToResponse(updatedDocument);
 
         } catch (IOException e) {
-
             throw new BadRequestException(
                     "Failed to update document"
             );
         }
     }
 
+    // Delete a document
     @Override
     public void deleteDocument(Long documentId) {
 
         EmployeeDocument document =
-                employeeDocumentRepository
-                        .findById(documentId)
+                employeeDocumentRepository.findById(documentId)
                         .orElseThrow(() ->
                                 new ResourceNotFoundException(
                                         "Document not found with ID: "
@@ -262,18 +241,15 @@ public class EmployeeDocumentServiceImpl
                                 )
                         );
 
-        employeeDocumentRepository.delete(
-                document
-        );
+        employeeDocumentRepository.delete(document);
     }
 
+    // Get document file content
     @Override
-    public byte[] getDocumentFile(
-            Long documentId) {
+    public byte[] getDocumentFile(Long documentId) {
 
         EmployeeDocument document =
-                employeeDocumentRepository
-                        .findById(documentId)
+                employeeDocumentRepository.findById(documentId)
                         .orElseThrow(() ->
                                 new ResourceNotFoundException(
                                         "Document not found with ID: "
@@ -293,13 +269,12 @@ public class EmployeeDocumentServiceImpl
         return document.getFileData();
     }
 
+    // Get document content type
     @Override
-    public String getDocumentContentType(
-            Long documentId) {
+    public String getDocumentContentType(Long documentId) {
 
         EmployeeDocument document =
-                employeeDocumentRepository
-                        .findById(documentId)
+                employeeDocumentRepository.findById(documentId)
                         .orElseThrow(() ->
                                 new ResourceNotFoundException(
                                         "Document not found with ID: "
@@ -310,14 +285,12 @@ public class EmployeeDocumentServiceImpl
         return document.getContentType();
     }
 
-
+    // Get document file name
     @Override
-    public String getDocumentFileName(
-            Long documentId) {
+    public String getDocumentFileName(Long documentId) {
 
         EmployeeDocument document =
-                employeeDocumentRepository
-                        .findById(documentId)
+                employeeDocumentRepository.findById(documentId)
                         .orElseThrow(() ->
                                 new ResourceNotFoundException(
                                         "Document not found with ID: "
@@ -328,6 +301,7 @@ public class EmployeeDocumentServiceImpl
         return document.getFileName();
     }
 
+    // Map entity to response DTO
     private EmployeeDocumentResponse mapToResponse(
             EmployeeDocument document) {
 

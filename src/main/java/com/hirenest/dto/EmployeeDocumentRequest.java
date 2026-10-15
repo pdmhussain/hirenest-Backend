@@ -6,13 +6,16 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
+import com.hirenest.enums.DocumentStatus;
+
+
 
 @Getter
 @Setter
 public class EmployeeDocumentRequest {
 
     @NotNull(message = "Employee ID is required")
-    private Long employeeId;
+    private String employeeId;
 
     @NotNull(message = "Document type is required")
     private DocumentType documentType;
@@ -22,5 +25,5 @@ public class EmployeeDocumentRequest {
 
     private MultipartFile file;
 
-    private String status;
+    private DocumentStatus status;
 }

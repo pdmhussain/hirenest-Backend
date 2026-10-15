@@ -17,7 +17,7 @@ public interface OfferLetterService {
     List<OfferLetterResponse> getAllOfferLetters();
 
     OfferLetterResponse getOfferLetterByEmployeeId(
-            Long employeeId
+            String employeeId
     );
 
     OfferLetterResponse updateOfferLetter(

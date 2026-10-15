@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface EmployeeDocumentRepository extends JpaRepository<EmployeeDocument, Long> {
 
-    List<EmployeeDocument> findByEmployeeId(Long employeeId);
+    List<EmployeeDocument> findByEmployeeId(String employeeId);
 
     List<EmployeeDocument> findByDocumentType(DocumentType documentType);
 }

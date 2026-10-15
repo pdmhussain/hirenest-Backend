@@ -64,14 +64,11 @@ public class OfferLetterController {
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<OfferLetterResponse>
     getOfferLetterByEmployeeId(
-            @PathVariable Long employeeId) {
+            @PathVariable String employeeId) {
 
         return ResponseEntity.ok(
                 offerLetterService
-                        .getOfferLetterByEmployeeId(
-                                employeeId
-                        )
-        );
+                        .getOfferLetterByEmployeeId(employeeId));
     }
 
     // UPDATE + OPTIONAL PDF REPLACEMENT

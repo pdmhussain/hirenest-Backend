@@ -67,11 +67,11 @@ public class EmployeeDocumentController {
     @GetMapping("/employee/{employeeId}")
     public ResponseEntity<List<EmployeeDocumentResponse>>
     getDocumentsByEmployeeId(
-            @PathVariable Long employeeId) {
+            @PathVariable String employeeId) {
 
         List<EmployeeDocumentResponse> response =
                 employeeDocumentService
-                        .getDocumentsByEmployeeId(employeeId);
+                        .getDocumentsByEmployeeId(Long.valueOf(employeeId));
 
         return ResponseEntity.ok(response);
     }

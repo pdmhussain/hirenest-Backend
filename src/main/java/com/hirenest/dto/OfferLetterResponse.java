@@ -14,7 +14,7 @@ public class OfferLetterResponse {
 
     private Long id;
 
-    private Long employeeId;
+    private String employeeId;
 
     private String offerLetterNumber;
 

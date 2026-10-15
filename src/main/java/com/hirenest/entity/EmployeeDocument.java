@@ -1,5 +1,6 @@
 package com.hirenest.entity;
 
+import com.hirenest.enums.DocumentStatus;
 import com.hirenest.enums.DocumentType;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,7 +20,7 @@ public class EmployeeDocument {
     private Long documentId;
 
     @Column(name = "employee_id", nullable = false)
-    private Long employeeId;
+    private String employeeId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "document_type", nullable = false)
@@ -45,6 +46,7 @@ public class EmployeeDocument {
     @Column(name = "file_data", columnDefinition = "LONGBLOB")
     private byte[] fileData;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private DocumentStatus status;
 }

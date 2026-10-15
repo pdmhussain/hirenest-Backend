@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class OfferLetterRequest {
 
     @NotNull(message = "Employee ID is required")
-    private Long employeeId;
+    private String employeeId;
 
     @NotBlank(message = "Offer letter number is required")
     private String offerLetterNumber;
