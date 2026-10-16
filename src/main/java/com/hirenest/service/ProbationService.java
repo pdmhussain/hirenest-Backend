@@ -1,19 +1,21 @@
 package com.hirenest.service;
 
-import com.hirenest.dto.ProbationRequest;
-import com.hirenest.entity.ProbationDetails;
-
 import java.util.List;
+
+import com.hirenest.dto.ProbationRequest;
+import com.hirenest.dto.ProbationResponse;
 
 public interface ProbationService {
 
-    ProbationDetails createProbation(ProbationRequest request);
+    ProbationResponse createProbation(ProbationRequest request);
 
-    ProbationDetails getProbationById(Long id);
+    List<ProbationResponse> getAllProbations();
 
-    List<ProbationDetails> getAllProbations();
+    ProbationResponse getProbationByEmployeeId(String employeeId);
 
-    ProbationDetails updateProbation(Long id, ProbationRequest request);
+    ProbationResponse updateProbation(
+            String employeeId,
+            ProbationRequest request);
 
-    void deleteProbation(Long id);
+    void deleteProbation(String employeeId);
 }

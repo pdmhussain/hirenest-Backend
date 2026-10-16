@@ -2,23 +2,16 @@ package com.hirenest.dto;
 
 import java.time.LocalDate;
 
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class ProbationRequest {
 
-    private Long employeeId;
+    private String employeeId;
 
     private Integer probationPeriod;
 
     private LocalDate probationStartDate;
 
     private LocalDate probationEndDate;
-
-    private String status;
-
-    private String extensionReason;
 }

@@ -24,7 +24,7 @@ public class Domain {
     private String description;
 
     @Column(nullable = false)
-    private String status;
+    private String status = "ACTIVE";
 
     @JsonIgnore
     @OneToMany(mappedBy = "domain")

@@ -21,13 +21,12 @@ public class ProbationDetails {
     @JoinColumn(name = "employee_id", nullable = false, unique = true)
     private Employee employee;
 
-    private Integer probationPeriod;
+    @Column(nullable = false)
+    private Integer probationPeriod; // In months
 
+    @Column(nullable = false)
     private LocalDate probationStartDate;
 
+    @Column(nullable = false)
     private LocalDate probationEndDate;
-
-    private String status;
-
-    private String extensionReason;
 }

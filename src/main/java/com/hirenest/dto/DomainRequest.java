@@ -1,11 +1,8 @@
 package com.hirenest.dto;
 
-import lombok.*;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class DomainRequest {
 
     private String name;

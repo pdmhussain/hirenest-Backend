@@ -1,15 +1,16 @@
 package com.hirenest.controller;
 
-import com.hirenest.dto.ProbationRequest;
-import com.hirenest.entity.ProbationDetails;
-import com.hirenest.service.ProbationService;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import com.hirenest.dto.ProbationRequest;
+import com.hirenest.dto.ProbationResponse;
+import com.hirenest.service.ProbationService;
+
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/probations")
@@ -18,59 +19,43 @@ public class ProbationController {
 
     private final ProbationService probationService;
 
-    // ADMIN + HR can create Probation
-    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
     @PostMapping
-    public ResponseEntity<ProbationDetails> createProbation(
+    public ResponseEntity<ProbationResponse> createProbation(
             @RequestBody ProbationRequest request) {
 
-        return new ResponseEntity<>(
-                probationService.createProbation(request),
-                HttpStatus.CREATED
-        );
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(probationService.createProbation(request));
     }
 
-    // ADMIN + HR + USER can view one Probation
-    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'USER')")
-    @GetMapping("/{id}")
-    public ResponseEntity<ProbationDetails> getProbationById(
-            @PathVariable Long id) {
-
-        return ResponseEntity.ok(
-                probationService.getProbationById(id)
-        );
-    }
-
-    // ADMIN + HR + USER can view all Probations
-    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'USER')")
     @GetMapping
-    public ResponseEntity<List<ProbationDetails>> getAllProbations() {
+    public ResponseEntity<List<ProbationResponse>> getAllProbations() {
 
         return ResponseEntity.ok(
-                probationService.getAllProbations()
-        );
+                probationService.getAllProbations());
     }
 
-    // ADMIN + HR can update Probation
-    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
-    @PutMapping("/{id}")
-    public ResponseEntity<ProbationDetails> updateProbation(
-            @PathVariable Long id,
+    @GetMapping("/employee/{employeeId}")
+    public ResponseEntity<ProbationResponse> getProbationByEmployeeId(
+            @PathVariable String employeeId) {
+
+        return ResponseEntity.ok(
+                probationService.getProbationByEmployeeId(employeeId));
+    }
+
+    @PutMapping("/employee/{employeeId}")
+    public ResponseEntity<ProbationResponse> updateProbation(
+            @PathVariable String employeeId,
             @RequestBody ProbationRequest request) {
 
         return ResponseEntity.ok(
-                probationService.updateProbation(id, request)
-        );
+                probationService.updateProbation(employeeId, request));
     }
 
-    // Only ADMIN can delete Probation
-    @PreAuthorize("hasRole('ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/employee/{employeeId}")
     public ResponseEntity<Void> deleteProbation(
-            @PathVariable Long id) {
+            @PathVariable String employeeId) {
 
-        probationService.deleteProbation(id);
-
+        probationService.deleteProbation(employeeId);
         return ResponseEntity.noContent().build();
     }
-} 
+}
