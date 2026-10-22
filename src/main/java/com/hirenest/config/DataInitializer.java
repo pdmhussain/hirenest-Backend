@@ -1,3 +1,4 @@
+
 package com.hirenest.config;
 
 import com.hirenest.entity.User;
@@ -9,17 +10,54 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class DataInitializer {
+
     @Bean
-    CommandLineRunner createTestUser(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    CommandLineRunner createTestUsers(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder) {
+
         return args -> {
-            User user = userRepository.findByEmail("hr@hirenest.com").orElse(null);
-            if (user == null) {
-                user = new User("hr@hirenest.com", passwordEncoder.encode("Hr@12345"), "HR");
-            }
+            createUser(
+                    userRepository, passwordEncoder,
+                    "hr@hirenest.com", "Hr@12345", "HR"
+            );
+
+            createUser(
+                    userRepository, passwordEncoder,
+                    "sunny@gmail.com", "Emp@12345", "EMPLOYEE"
+            );
+
+            createUser(
+                    userRepository, passwordEncoder,
+                    "admin@hirenest.com", "Admin@12345", "ADMIN"
+            );
+        };
+    }
+
+    private void createUser(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            String email,
+            String password,
+            String role) {
+
+        User user = userRepository.findByEmail(email).orElse(null);
+
+        if (user == null) {
+            user = new User(
+                    email,
+                    passwordEncoder.encode(password),
+                    role
+            );
+
             user.setActive(true);
             user.setEmailVerified(true);
             userRepository.save(user);
-            System.out.println("Test user ready: hr@hirenest.com / Hr@12345");
-        };
+
+            System.out.println("Created test user: " + email
+                    + " | Role: " + role);
+        } else {
+            System.out.println("User already exists: " + email);
+        }
     }
 }

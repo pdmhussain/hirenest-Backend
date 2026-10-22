@@ -2,6 +2,6 @@ package com.hirenest.enums;
 
 public enum PFStatus {
     ACTIVE,
-    INACTIVE,
+    PENDING,
     NOT_APPLICABLE
 }
