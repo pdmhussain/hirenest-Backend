@@ -23,11 +23,11 @@ public class PfDetailsController {
 
 
     // =====================================================
-    // EMPLOYEE ONLY
+    // HR ONLY
     // =====================================================
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('EMPLOYEE', 'HR', 'ADMIN')")
+    @PreAuthorize("hasRole( 'HR')")
     public ResponseEntity<PFDetails> createPfDetails(
             @RequestBody PfDetailsDto request,
             Authentication authentication) {

@@ -22,10 +22,10 @@ public class BankDetailsController {
     private final BankDetailsService service;
 
     // =========================================
-    // EMPLOYEE ONLY - CREATE BANK DETAILS
+    // HR ONLY - CREATE BANK DETAILS
     // =========================================
     @PostMapping
-    @PreAuthorize("hasAnyRole('EMPLOYEE', 'HR', 'ADMIN')")
+    @PreAuthorize("hasRole( 'HR')")
     public ResponseEntity<BankDetails> createBankDetails(
             @RequestBody BankDetailsDto request,
             Authentication authentication) {
