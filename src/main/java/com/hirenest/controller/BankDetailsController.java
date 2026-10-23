@@ -25,7 +25,7 @@ public class BankDetailsController {
     // EMPLOYEE ONLY - CREATE BANK DETAILS
     // =========================================
     @PostMapping
-    @PreAuthorize("hasRole('EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('EMPLOYEE', 'HR', 'ADMIN')")
     public ResponseEntity<BankDetails> createBankDetails(
             @RequestBody BankDetailsDto request,
             Authentication authentication) {
