@@ -1,10 +1,10 @@
 package com.hirenest.enums;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
 import java.util.Arrays;
 import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 
 public enum Domain {
@@ -15,8 +15,10 @@ public enum Domain {
     DEVOPS("DevOps"),
     DEVSECOPS("DevSecOps"),
     DATA_ANALYST("Data Analyst"),
-    DATA_ENGINEERING("Data Engineering"),
-    DATA_SCIENCE("Data Science");
+        DATA_ENGINEERING("Data Engineering"),
+    DATA_SCIENCE("Data Science"),
+    UI_UX("UI/UX"),
+    TESTING("Testing");
 
     private final String displayName;
 
