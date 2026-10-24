@@ -13,9 +13,9 @@ import java.util.Optional;
 @Repository
 public interface EmploymentRepository extends JpaRepository<EmploymentDetails, Long> {
 
-    Optional<EmploymentDetails> findByEmployeeId(Long employeeId);
+    Optional<EmploymentDetails> findByEmployeeId(String employeeId);
 
-    boolean existsByEmployeeId(Long employeeId);
+    boolean existsByEmployeeId(String employeeId);
 
     List<EmploymentDetails> findByDomain(Domain domain);
 

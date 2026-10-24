@@ -1,14 +1,14 @@
 package com.hirenest.dto;
 
+import java.time.LocalDate;
+
 import com.hirenest.enums.Domain;
 import com.hirenest.enums.EmploymentStatus;
 import com.hirenest.enums.EmploymentType;
 
-import java.time.LocalDate;
-
 public record EmploymentResponse(
         Long id,
-        Long employeeId,
+        String employeeId,
         Domain domain,
         EmploymentType employmentType,
         LocalDate joiningDate,

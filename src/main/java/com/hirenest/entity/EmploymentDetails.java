@@ -17,7 +17,7 @@ public class EmploymentDetails {
 
     // Refers to Employee.id (Employee module is owned by another member)
     @Column(name = "employee_id", nullable = false, unique = true)
-    private Long employeeId;
+    private String employeeId;
 
     // One of the fixed domains (Java, Python, React Js, ...) stored as the enum name
     @Enumerated(EnumType.STRING)
@@ -51,8 +51,8 @@ public class EmploymentDetails {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public Long getEmployeeId() { return employeeId; }
-    public void setEmployeeId(Long employeeId) { this.employeeId = employeeId; }
+    public String getEmployeeId() { return employeeId; }
+    public void setEmployeeId(String employeeId) { this.employeeId = employeeId; }
 
     public Domain getDomain() { return domain; }
     public void setDomain(Domain domain) { this.domain = domain; }

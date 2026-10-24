@@ -14,7 +14,7 @@ public interface EmploymentService {
 
     EmploymentResponse getById(Long id);
 
-    EmploymentResponse getByEmployeeId(Long employeeId);
+    EmploymentResponse getByEmployeeId(String employeeId);
 
     List<EmploymentResponse> getAll();
 

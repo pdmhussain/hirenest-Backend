@@ -44,7 +44,7 @@ public class EmploymentServiceImpl implements EmploymentService {
 
     @Override
     @Transactional(readOnly = true)
-    public EmploymentResponse getByEmployeeId(Long employeeId) {
+    public EmploymentResponse getByEmployeeId(String employeeId) {
         EmploymentDetails entity = repository.findByEmployeeId(employeeId)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Employment details not found for employeeId: " + employeeId));
