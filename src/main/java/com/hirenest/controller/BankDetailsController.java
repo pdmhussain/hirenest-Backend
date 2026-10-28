@@ -1,4 +1,3 @@
-
 package com.hirenest.controller;
 
 import com.hirenest.dto.BankDetailsDto;
@@ -21,11 +20,9 @@ public class BankDetailsController {
 
     private final BankDetailsService service;
 
-    // =========================================
-    // HR ONLY - CREATE BANK DETAILS
-    // =========================================
+    // ADMIN + HR - CREATE BANK DETAILS
     @PostMapping
-    @PreAuthorize("hasRole( 'HR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
     public ResponseEntity<BankDetails> createBankDetails(
             @RequestBody BankDetailsDto request,
             Authentication authentication) {
@@ -37,11 +34,9 @@ public class BankDetailsController {
         );
     }
 
-    // =========================================
-    // HR + ADMIN - GET ALL BANK DETAILS
-    // =========================================
+    // ADMIN + HR + USER - GET ALL BANK DETAILS
     @GetMapping
-    @PreAuthorize("hasAnyRole('HR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'USER')")
     public ResponseEntity<List<BankDetails>> getAllBankDetails() {
 
         return ResponseEntity.ok(
@@ -49,11 +44,9 @@ public class BankDetailsController {
         );
     }
 
-    // =========================================
-    // HR + ADMIN - GET BY EMPLOYEE ID
-    // =========================================
+    // ADMIN + HR + USER - GET BANK DETAILS BY EMPLOYEE ID
     @GetMapping("/employee/{employeeId}")
-    @PreAuthorize("hasAnyRole('HR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'USER')")
     public ResponseEntity<BankDetails> getByEmployeeId(
             @PathVariable Long employeeId) {
 
@@ -62,11 +55,9 @@ public class BankDetailsController {
         );
     }
 
-    // =========================================
-    // HR + ADMIN - UPDATE BANK DETAILS
-    // =========================================
+    // ADMIN + HR - UPDATE BANK DETAILS
     @PutMapping("/{id}")
-    @PreAuthorize("hasAnyRole('HR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
     public ResponseEntity<BankDetails> updateBankDetails(
             @PathVariable Long id,
             @RequestBody BankDetailsDto request) {
@@ -76,9 +67,7 @@ public class BankDetailsController {
         );
     }
 
-    // =========================================
     // ADMIN ONLY - DELETE BANK DETAILS
-    // =========================================
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteBankDetails(

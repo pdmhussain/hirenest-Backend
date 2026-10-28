@@ -6,7 +6,6 @@ import com.hirenest.service.PfDetailsService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -21,13 +20,9 @@ public class PfDetailsController {
 
     private final PfDetailsService service;
 
-
-    // =====================================================
-    // HR ONLY
-    // =====================================================
-
+    // ADMIN + HR - CREATE PF DETAILS
     @PostMapping
-    @PreAuthorize("hasRole( 'HR')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
     public ResponseEntity<PFDetails> createPfDetails(
             @RequestBody PfDetailsDto request,
             Authentication authentication) {
@@ -39,13 +34,9 @@ public class PfDetailsController {
         );
     }
 
-
-    // =====================================================
-    // HR + ADMIN ONLY
-    // =====================================================
-
+    // ADMIN + HR + USER - GET ALL PF DETAILS
     @GetMapping
-    @PreAuthorize("hasAnyRole('HR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'USER')")
     public ResponseEntity<List<PFDetails>> getAllPfDetails() {
 
         return ResponseEntity.ok(
@@ -53,13 +44,9 @@ public class PfDetailsController {
         );
     }
 
-
-    // =====================================================
-    // HR + ADMIN ONLY
-    // =====================================================
-
+    // ADMIN + HR + USER - GET PF DETAILS BY EMPLOYEE ID
     @GetMapping("/employee/{employeeId}")
-    @PreAuthorize("hasAnyRole('HR', 'ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR', 'USER')")
     public ResponseEntity<PFDetails> getByEmployeeId(
             @PathVariable Long employeeId) {
 
@@ -68,13 +55,26 @@ public class PfDetailsController {
         );
     }
 
+    // ADMIN + HR - UPDATE PF DETAILS
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
+    public ResponseEntity<PFDetails> updatePfDetails(
+            @PathVariable Long id,
+            @RequestBody PfDetailsDto request) {
+
+        return ResponseEntity.ok(
+                service.updatePfDetails(id, request)
+        );
+    }
+
+    // ADMIN ONLY - DELETE PF DETAILS
     @DeleteMapping("/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deletePfDetails(
             @PathVariable Long id) {
+
         service.deletePfDetails(id);
 
         return ResponseEntity.noContent().build();
     }
-
 }

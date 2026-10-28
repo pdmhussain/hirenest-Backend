@@ -10,18 +10,16 @@ import com.hirenest.service.PfDetailsService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class PfDetailsServiceImpl
-        implements PfDetailsService {
+public class PfDetailsServiceImpl implements PfDetailsService {
 
     private final PfDetailsRepository pfDetailsRepository;
-
     private final EmployeeRepository employeeRepository;
-
 
     @Override
     public PFDetails createPfDetails(
@@ -32,11 +30,17 @@ public class PfDetailsServiceImpl
                 .findByEmail(email)
                 .orElseThrow(() ->
                         new RuntimeException(
-                                "Employee not found with email: " + email));
+                                "Employee not found with email: " + email
+                        )
+                );
 
-        if (pfDetailsRepository.findByEmployee_Id(employee.getId()).isPresent()) {
+        if (pfDetailsRepository
+                .findByEmployee_Id(employee.getId())
+                .isPresent()) {
+
             throw new RuntimeException(
-                    "PF details already exist for this employee");
+                    "PF details already exist for this employee"
+            );
         }
 
         PFDetails pfDetails = new PFDetails();
@@ -56,10 +60,8 @@ public class PfDetailsServiceImpl
         return pfDetailsRepository.findAll();
     }
 
-
     @Override
-    public PFDetails getByEmployeeId(
-            Long employeeId) {
+    public PFDetails getByEmployeeId(Long employeeId) {
 
         return pfDetailsRepository
                 .findByEmployee_Id(employeeId)
@@ -71,6 +73,30 @@ public class PfDetailsServiceImpl
                 );
     }
 
+    // UPDATE PF DETAILS
+    @Override
+    @Transactional
+    public PFDetails updatePfDetails(
+            Long id,
+            PfDetailsDto request) {
+
+        PFDetails pfDetails = pfDetailsRepository
+                .findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "PF details not found with ID: " + id
+                        )
+                );
+
+        pfDetails.setPfAccountNumber(request.getPfAccountNumber());
+        pfDetails.setUan(request.getUan());
+        pfDetails.setPfStatus(request.getPfStatus());
+        pfDetails.setUanStatus(request.getUanStatus());
+
+        return pfDetailsRepository.save(pfDetails);
+    }
+
+    // DELETE PF DETAILS
     @Override
     public void deletePfDetails(Long id) {
 
@@ -84,5 +110,4 @@ public class PfDetailsServiceImpl
 
         pfDetailsRepository.delete(pfDetails);
     }
-
 }
