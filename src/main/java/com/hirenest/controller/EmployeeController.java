@@ -85,4 +85,14 @@ public class EmployeeController {
     public List<EmployeeResponse> getInternEmployees() {
         return employeeService.getInternEmployees();
     }
+
+    @PreAuthorize("hasAnyRole('ADMIN', 'HR')")
+    @PutMapping("/{id}/restore")
+    public ResponseEntity<EmployeeResponse> restoreEmployee(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                employeeService.restoreEmployee(id)
+        );
+    }
 }
