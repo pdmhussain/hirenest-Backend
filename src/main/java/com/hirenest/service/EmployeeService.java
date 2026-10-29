@@ -22,4 +22,7 @@ public interface EmployeeService {
     List<EmployeeResponse> getFormerEmployees();
     
     List<EmployeeResponse> getInternEmployees();
+
+    EmployeeResponse restoreEmployee(Long id);
+    
 }
