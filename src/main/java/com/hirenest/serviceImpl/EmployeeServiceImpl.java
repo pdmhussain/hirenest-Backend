@@ -173,6 +173,29 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .map(this::convertToResponse)
                 .toList();
     }
+    @Override
+    public EmployeeResponse restoreEmployee(Long id) {
+
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() ->
+                    new ResourceNotFoundException(
+                        "Employee not found with id: " + id
+                    )
+                );
+
+        if (!"FORMER".equals(employee.getStatus())) {
+            throw new IllegalStateException(
+                "Only former employees can be restored. Current status: "
+                + employee.getStatus()
+            );
+        }
+
+        employee.setStatus("ACTIVE");
+
+        Employee restoredEmployee = employeeRepository.save(employee);
+
+        return convertToResponse(restoredEmployee);
+    }
     private EmployeeResponse convertToResponse(Employee employee) {
 
         EmployeeResponse response = new EmployeeResponse();
