@@ -1,7 +1,7 @@
+
 package com.hirenest.dto;
 
 import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,4 +24,6 @@ public class ProbationResponse {
     private LocalDate currentDate;
 
     private String probationStatus;
+
+    private String extensionReason;
 }

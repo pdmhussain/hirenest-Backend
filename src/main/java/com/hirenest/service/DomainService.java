@@ -3,17 +3,17 @@ package com.hirenest.service;
 import java.util.List;
 
 import com.hirenest.dto.DomainRequest;
-import com.hirenest.entity.Domain;
+import com.hirenest.dto.DomainResponse;
 
 public interface DomainService {
 
-    Domain createDomain(DomainRequest request);
+    DomainResponse createDomain(DomainRequest request);
 
-    List<Domain> getAllDomains();
+    List<DomainResponse> getAllDomains();
 
-    Domain getDomainById(Long id);
+    DomainResponse getDomainById(Long id);
 
-    Domain updateDomain(Long id, DomainRequest request);
+    DomainResponse updateDomain(Long id, DomainRequest request);
 
     void deleteDomain(Long id);
 }

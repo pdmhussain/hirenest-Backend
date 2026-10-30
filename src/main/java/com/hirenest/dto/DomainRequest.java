@@ -6,8 +6,6 @@ import lombok.Data;
 public class DomainRequest {
 
     private String name;
-
     private String description;
-
     private String status;
 }

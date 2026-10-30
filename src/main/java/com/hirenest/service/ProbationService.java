@@ -1,9 +1,11 @@
+
 package com.hirenest.service;
 
 import java.util.List;
 
 import com.hirenest.dto.ProbationRequest;
 import com.hirenest.dto.ProbationResponse;
+import com.hirenest.dto.ProbationDomainSummaryResponse;
 
 public interface ProbationService {
 
@@ -18,4 +20,9 @@ public interface ProbationService {
             ProbationRequest request);
 
     void deleteProbation(String employeeId);
+
+    List<ProbationResponse> getProbationsByStatus(String status);
+
+    ProbationDomainSummaryResponse getProbationDomainSummary(
+            Long domainId);
 }

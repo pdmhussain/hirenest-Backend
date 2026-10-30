@@ -3,6 +3,7 @@ package com.hirenest.entity;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hirenest.entity.Employee;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -24,7 +25,7 @@ public class Domain {
     private String description;
 
     @Column(nullable = false)
-    private String status = "ACTIVE";
+    private String status = "Active";
 
     @JsonIgnore
     @OneToMany(mappedBy = "domain")

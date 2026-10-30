@@ -1,15 +1,12 @@
 package com.hirenest.controller;
-
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+import com.hirenest.dto.ProbationDomainSummaryResponse;
 import com.hirenest.dto.ProbationRequest;
 import com.hirenest.dto.ProbationResponse;
 import com.hirenest.service.ProbationService;
-
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -57,5 +54,22 @@ public class ProbationController {
 
         probationService.deleteProbation(employeeId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<ProbationResponse>> getProbationsByStatus(
+            @PathVariable String status) {
+
+        return ResponseEntity.ok(
+                probationService.getProbationsByStatus(status));
+    }
+
+    @GetMapping("/domain/{domainId}")
+    public ResponseEntity<ProbationDomainSummaryResponse>
+    getProbationDomainSummary(
+            @PathVariable Long domainId) {
+
+        return ResponseEntity.ok(
+                probationService.getProbationDomainSummary(domainId));
     }
 }
